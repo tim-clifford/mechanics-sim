@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using Gtk;
+using Gdk;
 using Cairo;
 using Structures;
+using SimObjects;
 using System.Threading;
 using System.Threading.Tasks;
 using static Program.Constants;
@@ -20,8 +23,29 @@ namespace Graphics {
 			return Matrix3.ExtrinsicZYXRotation(this.angle)*(position - this.position);
 		}
 	}
-	class SystemWindow : Window {
+	class SystemWindow : Gtk.Window {
 		protected SystemView sys_view;
+		public Camera camera { 
+			get {
+				return sys_view.camera;
+			} set {
+				sys_view.camera = value;
+			}
+		}
+		public double radius_multiplier { 
+			get {
+				return sys_view.radius_multiplier;
+			} set {
+				sys_view.radius_multiplier = value;
+			}
+		}
+		public double bounds_multiplier { 
+			get {
+				return sys_view.bounds_multiplier;
+			} set {
+				sys_view.bounds_multiplier = value;
+			}
+		}
 		public SystemWindow(String s, ObjectSystem sys) : base(s) {
 			sys_view = new SystemView(sys);
             this.Add(sys_view);
@@ -40,14 +64,15 @@ namespace Graphics {
 		
 		public Camera camera {get; set;} = new Camera(100,Vector3.zero);
 		public double radius_multiplier {get; set;} = 1;
-		public int line_max {get; set;} = 100;
 		public double bounds_multiplier {get; set;} = 0.25;
 		protected ObjectSystem sys;
 		protected bool playing = false;
-		protected int[] order;
 		protected double max = 0;
+		protected List<int> order;
 		public SystemView(ObjectSystem sys) {
 			this.sys = sys;
+			order = new List<int>();
+			for (int i = 0; i < sys.Count; i++) { order.Add(i); }
 			Redraw();
 		}
 		public void Redraw() {
@@ -84,8 +109,9 @@ namespace Graphics {
 			var scale = Math.Min(AllocatedWidth/bounds.x,AllocatedHeight/bounds.y);
 			ctx.Scale(scale,scale);
 			var origin = this.sys.origin;
-			foreach (SimObject obj in sys) {
-				obj.Draw(ctx, origin, camera);
+			order = order.OrderByDescending(x => Vector3.Magnitude(sys[x].position - camera.position)).ToList();
+			foreach (int i in order) {
+				sys[i].Draw(ctx, origin, camera);
 			}
 			return true;
 		}

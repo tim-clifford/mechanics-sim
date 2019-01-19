@@ -1,7 +1,8 @@
 using System;
+using Structures;
 using System.Collections;
 using System.Collections.Generic;
-namespace Structures {
+namespace SimObjects {
 sealed class ObjectSystem : IEnumerable<SimObject> {
     private List<SimObject> objects;
     public Vector3 origin {get; set;} = Vector3.zero;
@@ -18,10 +19,14 @@ sealed class ObjectSystem : IEnumerable<SimObject> {
             objects[i] = value;
         }
     }
+    public int Count {
+        get {
+            return this.objects.Count;
+        }
+    }
     public ObjectSystem(List<SimObject> objects) {
         this.objects = objects;
     }
-    private System.Media.SoundPlayer soundPlayer = new System.Media.SoundPlayer("click.wav");
     public void TimeStep(double timestep) {
         for (int i = 0; i < objects.Count; i++) {
             var obj = objects[i];

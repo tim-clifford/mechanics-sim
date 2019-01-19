@@ -1,5 +1,6 @@
 using System;
-namespace Structures {
+using Structures;
+namespace SimObjects {
     class Ball : SimObject {
         public double radius {get; set;} = 1;
         public override double MomentOfInertia {

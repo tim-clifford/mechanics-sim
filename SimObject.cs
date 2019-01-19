@@ -1,5 +1,6 @@
 using System;
-namespace Structures {
+using Structures;
+namespace SimObjects {
     abstract class SimObject {
         public Vector3 color {get; set;} = new Vector3(1,1,1);
         // The position of the center of the object
@@ -35,11 +36,11 @@ namespace Structures {
                     return true;
                 } else {
                     Console.WriteLine("WARNING: Collision equality 1");
-                    return false;
+                    return true;
                 }
             } else if (obj2.IsCollided(obj1)) {
                 Console.WriteLine("WARNING: Collision equality 2");
-                return false;
+                return true;
             } else {
                 return false;
             }
