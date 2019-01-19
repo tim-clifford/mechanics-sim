@@ -21,7 +21,7 @@ sealed class ObjectSystem : IEnumerable<SimObject> {
     public ObjectSystem(List<SimObject> objects) {
         this.objects = objects;
     }
-    protected System.Media.SoundPlayer soundPlayer = new System.Media.SoundPlayer("click.wav");
+    private System.Media.SoundPlayer soundPlayer = new System.Media.SoundPlayer("click.wav");
     public void TimeStep(double timestep) {
         for (int i = 0; i < objects.Count; i++) {
             var obj = objects[i];

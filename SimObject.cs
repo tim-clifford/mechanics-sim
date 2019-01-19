@@ -1,6 +1,4 @@
 using System;
-using Gtk;
-using Cairo;
 namespace Structures {
     abstract class SimObject {
         public Vector3 color {get; set;} = new Vector3(1,1,1);

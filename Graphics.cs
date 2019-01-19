@@ -20,6 +20,22 @@ namespace Graphics {
 			return Matrix3.ExtrinsicZYXRotation(this.angle)*(position - this.position);
 		}
 	}
+	class SystemWindow : Window {
+		protected SystemView sys_view;
+		public SystemWindow(String s, ObjectSystem sys) : base(s) {
+			sys_view = new SystemView(sys);
+            this.Add(sys_view);
+            this.Events |= EventMask.PointerMotionMask | EventMask.ScrollMask;
+            this.DeleteEvent += delegate { Application.Quit (); };
+            this.KeyPressEvent += Program.Input.KeyPress;
+            this.MotionNotifyEvent += Program.Input.MouseMovement;
+            this.ScrollEvent += Program.Input.Scroll;
+			this.ShowAll();
+		}
+		public void Play(int interval) { sys_view.Play(interval); }
+		public void PlayAsync(int interval) { sys_view.PlayAsync(interval); }
+		public void Stop() { sys_view.Stop(); }
+	}
 	class SystemView : DrawingArea {
 		
 		public Camera camera {get; set;} = new Camera(100,Vector3.zero);
