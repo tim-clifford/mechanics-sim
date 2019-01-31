@@ -8,6 +8,7 @@ namespace Program {
         
     }
     static class Globals {
-        public static Graphics.SystemWindow activesyswindow;
+        public static Graphics.SystemWindow active_syswindow;
+        public static int collision_counter = 0;
     }
 }

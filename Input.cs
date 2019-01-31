@@ -10,7 +10,6 @@ using Gtk;
 using Gdk;
 using Cairo;
 using Graphics;
-using static Program.Globals;
 namespace Program {
     static class Input {
         private static bool canMove = false;
@@ -21,8 +20,8 @@ namespace Program {
         [GLib.ConnectBefore]
     	public static void KeyPress(object sender, KeyPressEventArgs args) {
 	    	if (args.Event.Key == Gdk.Key.r) {
-                double d = Vector3.Magnitude(activesyswindow.camera.position);
-                activesyswindow.camera = new Camera(d,Vector3.zero);
+                double d = Vector3.Magnitude(active_syswindow.camera.position);
+                active_syswindow.camera = new Camera(d,Vector3.zero);
             } else if (args.Event.Key == Gdk.Key.l) {
                 canMove = !canMove;
                 if (!canMove) {
@@ -36,19 +35,19 @@ namespace Program {
             if (canMove) {
                 if (rootPos == null || rootAngle == null ) {
                     rootPos = new Vector3(args.Event.X,args.Event.Y,0);
-                    rootAngle = activesyswindow.camera.angle;
+                    rootAngle = active_syswindow.camera.angle;
                 } else {
-                    double d = Vector3.Magnitude(activesyswindow.camera.position);
-                    activesyswindow.camera = new Camera(d,rootAngle + deg*mouse_sensitivity* new Vector3(rootPos.y - args.Event.Y,args.Event.X - rootPos.x, 0));
+                    double d = Vector3.Magnitude(active_syswindow.camera.position);
+                    active_syswindow.camera = new Camera(d,rootAngle + deg*mouse_sensitivity* new Vector3(rootPos.y - args.Event.Y,args.Event.X - rootPos.x, 0));
                 } args.RetVal = true;
             }
         }
         [GLib.ConnectBefore]
         public static void Scroll(Object sender, ScrollEventArgs args) {
             if (args.Event.Direction == Gdk.ScrollDirection.Up) {
-                activesyswindow.bounds_multiplier /= scroll_sensitivity;
+                active_syswindow.bounds_multiplier /= scroll_sensitivity;
             } else if (args.Event.Direction == Gdk.ScrollDirection.Down) {
-                activesyswindow.bounds_multiplier *= scroll_sensitivity;
+                active_syswindow.bounds_multiplier *= scroll_sensitivity;
             }
         }
     }

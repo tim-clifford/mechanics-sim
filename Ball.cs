@@ -21,6 +21,7 @@ namespace SimObjects {
             else return radius*Vector3.Unit(p-this.position) + this.position;
         }
         public override void Draw(Cairo.Context ctx, Vector3 origin, Graphics.Camera camera) {
+            // just draw a circle
             var pos = camera.Transform(this.position) - camera.Transform(origin);
 		    var cl = this.color;
 			ctx.SetSourceRGB (cl.x,cl.y,cl.z);

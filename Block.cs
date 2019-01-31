@@ -2,7 +2,7 @@ using Structures;
 using System;
 namespace SimObjects {
     class Block : SimObject {
-        public Vector3 dimensions {get; set;}
+        public Vector3 dimensions {get; set;} = new Vector3(1,1,1);
         public Vector3 orientation {get; set;} = Vector3.zero;
         public readonly double line_multiplier = 0.1;
         public double line_width {
@@ -79,7 +79,6 @@ namespace SimObjects {
             if (IsCollided(r)) return r;
             else {
                 var p = ToInternalPosition(r);
-                var n = Normal(r);
                 Vector3 c = Vector3.zero;
                 if (p.x > 0) c += new Vector3(Math.Min(p.x,dimensions.x/2),0,0);
                 else c += new Vector3(Math.Max(p.x,-dimensions.x/2),0,0);
@@ -88,19 +87,6 @@ namespace SimObjects {
                 if (p.z > 0) c += new Vector3(0,0,Math.Min(p.z,dimensions.z/2));
                 else c += new Vector3(0,0,Math.Max(p.z,-dimensions.z/2));
                 return ToExternalPosition(c);
-                /*var n_inv = new Vector3(Math.Abs(Math.Abs(n.x)-1),Math.Abs(Math.Abs(n.y)-1),Math.Abs(Math.Abs(n.z)-1));
-                var p_1 = new Vector3(n_inv.x*p.x,n_inv.y*p.y,n_inv.z*p.z);
-                var n_dim = new Vector3(n.x*dimensions.x,n.y*dimensions.y,n.z*dimensions.z);
-                if (Math.Abs(p_1.x) <= dimensions.x/2
-                    && Math.Abs(p_1.y) <= dimensions.y/2
-                    && Math.Abs(p_1.z) <= dimensions.z/2
-                ) {
-                    return ToExternalPosition(p_1 + n_dim/2);
-                } else {
-                    // closest will be on an edge or corner
-
-                }*/
-
             }
         }
         public override void Draw(Cairo.Context ctx, Vector3 origin, Graphics.Camera camera) {
@@ -114,6 +100,7 @@ namespace SimObjects {
                 ToExternalPosition(new Vector3(-(dimensions.x - line_width)/2,-(dimensions.y - line_width)/2,(dimensions.z - line_width)/2)),
                 ToExternalPosition(new Vector3(-(dimensions.x - line_width)/2,-(dimensions.y - line_width)/2,-(dimensions.z - line_width)/2)),
             };
+            // vertices adjacent to each (but not repeated)
             int[][] adjacency = new int[][] {
                 new int[] {1,2,4},
                 new int[] {3,5},

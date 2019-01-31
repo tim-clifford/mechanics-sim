@@ -2,6 +2,7 @@ using System;
 using Structures;
 using System.Collections;
 using System.Collections.Generic;
+using static Program.Globals;
 namespace SimObjects {
 sealed class ObjectSystem : IEnumerable<SimObject> {
     private List<SimObject> objects;
@@ -34,9 +35,8 @@ sealed class ObjectSystem : IEnumerable<SimObject> {
                 var obj2 = objects[j];
                 if (SimObject.Collided(obj,obj2)) {
                     SimObject.Collide(obj,obj2);
-                    //soundPlayer.Play();
-                    // Log collisions in the test class
-                    Tests.i++;
+                    // Log collisions
+                    collision_counter++;
                 }
             }
         }

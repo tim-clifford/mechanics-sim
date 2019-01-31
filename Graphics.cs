@@ -104,11 +104,10 @@ namespace Graphics {
 			// Normally (0,0) is in the corner, but we want it in the middle, so we must translate:
 			ctx.Translate(AllocatedWidth/2,AllocatedHeight/2);
 			var bounds = bounds_multiplier * max * new Vector3(1,1,1);
-			// we care about the limiting factor, since most orbits will be bounded roughly by a square
-			// but screens are rectangular
 			var scale = Math.Min(AllocatedWidth/bounds.x,AllocatedHeight/bounds.y);
 			ctx.Scale(scale,scale);
 			var origin = this.sys.origin;
+			// draw closest objects last
 			order = order.OrderByDescending(x => Vector3.Magnitude(sys[x].position - camera.position)).ToList();
 			foreach (int i in order) {
 				sys[i].Draw(ctx, origin, camera);
